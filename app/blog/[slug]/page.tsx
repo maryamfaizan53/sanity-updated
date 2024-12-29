@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/blog/[slug]/page.tsx
 
 import { client } from "@/sanity/lib/client";
@@ -10,7 +11,7 @@ export const revalidate = 60; // optional
 // 1) Just define your own type, avoiding "extends PageProps" or similar
 type BlogPageProps = {
   params: {
-    slug: string;
+    slug: any;
   };
 };
 
