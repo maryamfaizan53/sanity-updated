@@ -1,6 +1,6 @@
 type Post ={
-    summary :'string',
-    title:'string',
-    slug:'string',
-    image:'string',
+    summary :string,
+    title:string,
+    slug:string,
+    image:string,
 }

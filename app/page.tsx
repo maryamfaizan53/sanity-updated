@@ -3,12 +3,12 @@ import { client } from "@/sanity/lib/client";
 import BlogCard from "@/app/components/BlogCard";
 
 // 1) Define your Post type
-interface Post {
-  title: string;
-  summary: string;
-  image: string; 
-  slug: string;
-}
+// interface Post {
+//   title: string;
+//   summary: string;
+//   image: string; 
+//   slug: string;
+// }
 
 export const revalidate = 60; // optional
 
@@ -39,7 +39,7 @@ export default async function Home() {
 
 
 // import { client } from "@/sanity/lib/client";
-// import BlogCard from "@/app/components/BlogCard";
+// import BlogCard from "@/app/components/BlogCard"; ab kr k dekho...bhta teez ho haha ap toh wow meri toh anken khul reh gyi haha masha alllah....faida nhi konsa deploy hogaya
 
 // // 1) Define your Post interface
 // // interface Post {
