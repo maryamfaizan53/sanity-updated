@@ -10,7 +10,7 @@ import BlogCard from "@/app/components/BlogCard";
 //   slug: string;
 // }
 
-export const revalidate = 60; // optional
+export const revalidate = 60; // optional // jb hm code change krte hain kuch bhi to vercel pe bhi khud hi change hojata hai??? han push ke badh 
 
 export default async function Home() {
   const query = `*[_type == "post"] | order(_createdAt asc) {

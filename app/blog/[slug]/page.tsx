@@ -5,44 +5,73 @@ import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { components } from "@/app/components/customComponents";
 
-export const revalidate = 60; // optional
+export const revalidate = 60; //seconds
 
-// 1) Just define your own type, avoiding "extends PageProps" or similar
-type BlogPageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-// 2) Make sure generateStaticParams() returns an array of plain objects
-export async function generateStaticParams() {
-  const query = `*[_type == "post"]{ "slug": slug.current }`;
+ export async function generateStaticParams() {
+  const query = `*[_type=='post']{
+    "slug":slug.current
+  }`;
   const slugs = await client.fetch(query);
-
-  return slugs.map((item: { slug: string }) => ({
-    slug: item.slug,
-  }));
+  const slugRoutes = slugs.map((item:{slug:string})=>(
+    item.slug
+  ));
+  // console.log(slugRoutes)
+  return slugRoutes.map((slug:string)=>(
+    {slug}
+  ))
+  
 }
 
-// 3) Page component receives `params.slug`
-export default async function Page({ params: { slug } }: BlogPageProps) {
-  // Use a parameterized query
-  const query = `
-    *[_type=="post" && slug.current == $slug]{
-      title,
-      summary,
-      image,
-      content,
-      author->{
-        bio,
-        image,
-        name
-      }
-    }[0]
-  `;
+// To create static pages for dynamic routes
+export default async function page({params:{slug}}:{params:{slug:string}}) {
 
-  // fetch the matching post
-  const post = await client.fetch(query, { slug });
+  const query = `*[_type=='post' && slug.current=="${slug}"]{
+    title,summary,image,content,
+      author->{bio,image,name}
+  }[0]`;
+  const post = await client.fetch(query);
+  // console.log(post);
+
+
+
+// export const revalidate = 60; // optional
+
+// // 1) Just define your own type, avoiding "extends PageProps" or similar
+// type BlogPageProps = {
+//   params: {
+//     slug: string;
+//   };
+// };
+
+// // 2) Make sure generateStaticParams() returns an array of plain objects
+// export async function generateStaticParams() {
+//   const query = `*[_type == "post"]{ "slug": slug.current }`;
+//   const slugs = await client.fetch(query);
+
+//   return slugs.map((item: { slug: string }) => ({
+//     slug: item.slug,
+//   }));
+// }
+
+// // 3) Page component receives `params.slug`
+// export default async function Page({ params: { slug } }: BlogPageProps) {
+//   // Use a parameterized query
+//   const query = `
+//     *[_type=="post" && slug.current == $slug]{
+//       title,
+//       summary,
+//       image,
+//       content,
+//       author->{
+//         bio,
+//         image,
+//         name
+//       }
+//     }[0]
+//   `;
+
+//   // fetch the matching post
+//   const post = await client.fetch(query, { slug });
 
   return (
     <article className="mt-12 mb-24 px-2 2xl:px-12 flex flex-col gap-y-8">
