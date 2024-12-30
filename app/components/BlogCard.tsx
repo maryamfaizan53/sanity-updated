@@ -1,7 +1,7 @@
 'use client'
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "../../sanity/lib/image";
+import { urlForImage } from "../../sanity/lib/image";
 
 export default function BlogCard({post}:{post:Post}) {
   return (
@@ -9,7 +9,7 @@ export default function BlogCard({post}:{post:Post}) {
       {/* Image Section*/}
       <div className="relative max-h-76 flex-1">
         <Image
-          src={urlFor(post.image)}
+          src={urlForImage(post.image)}
           alt="Beauty and Health Blogs"
           fill
           className="object-cover rounded-t"

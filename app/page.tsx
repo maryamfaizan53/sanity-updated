@@ -1,45 +1,78 @@
-// app/page.tsx
-import { client } from "@/sanity/lib/client";
-import BlogCard from "@/app/components/BlogCard";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import BlogCard from "./components/BlogCard";
+import Image from "next/image";
+import { client } from "../sanity/lib/client";
 
-// 1) Define your Post type
-// interface Post {
-//   title: string;
-//   summary: string;
-//   image: string; 
-//   slug: string;
+export const revalidate = 60; //seconds
+
+
+
+
+
+// export default async function Home() {
+//   const query = `*[_type=='post'] | order(_createdAt asc){
+  
+//     summary,title,image,
+//       "slug":slug.current
+//   }`;
+
+//   const posts:Post[] = await client.fetch(query)
+//   // console.log(posts)
+
+//   return (
+//     <main className="flex min-h-screen flex-col ">
+//       <h1 className="text-2xl font-bold uppercase my-12 text-center text-dark dark:text-light sm:text-3xl lg:text-5xl ">
+//         Most Recent blogs
+//       </h1>
+//       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+//         {
+//           posts.map((post:Post)=>(
+//             <BlogCard post={post} key={post.slug} />
+//           ))
+//         }
+
+//       </section>
+//     </main>
+//   );
 // }
 
-export const revalidate = 60; // optional // jb hm code change krte hain kuch bhi to vercel pe bhi khud hi change hojata hai??? han push ke badh 
 
 export default async function Home() {
-  const query = `*[_type == "post"] | order(_createdAt asc) {
-    title,
-    summary,
-    image,
+  const query = `*[_type=='post'] | order(_createdAt asc){
+    summary, title, 
+    "image": image.asset->url,
     "slug": slug.current
   }`;
 
-  // 2) Fetch all posts
-  const posts: Post[] = await client.fetch(query);
+  let posts: Post[] = [];
+  try {
+    posts = await client.fetch(query);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
 
   return (
-    <main className="flex min-h-screen flex-col">
-      <h1 className="text-2xl font-bold uppercase my-12 text-center">
-        Health and Beauty Blogs
+    <main className="flex min-h-screen flex-col ">
+      <h1 className="text-2xl font-bold uppercase my-12 text-center text-dark dark:text-light sm:text-3xl lg:text-5xl ">
+        Most Recent Blogs
       </h1>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-        {posts.map((post) => (
-          <BlogCard post={post} key={post.slug} />
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post: Post) => (
+            <BlogCard post={post} key={post.slug || post.title} />
+          ))
+        ) : (
+          <p>No blogs available.</p>
+        )}
       </section>
     </main>
   );
 }
 
 
+
 // import { client } from "@/sanity/lib/client";
-// import BlogCard from "@/app/components/BlogCard"; ab kr k dekho...bhta teez ho haha ap toh wow meri toh anken khul reh gyi haha masha alllah....faida nhi konsa deploy hogaya
+// import BlogCard from "@/app/components/BlogCard";
 
 // // 1) Define your Post interface
 // // interface Post {
