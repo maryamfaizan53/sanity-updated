@@ -2,7 +2,7 @@ import Image from "next/image";
 import { client } from "../../../../sanity/lib/client";
 import { urlForImage } from "../../../../sanity/lib/image";
 import { PortableText } from "@portabletext/react";
-import { components } from "@/components/CustomComponent";
+
 
 export const revalidate = 60; //seconds
 
